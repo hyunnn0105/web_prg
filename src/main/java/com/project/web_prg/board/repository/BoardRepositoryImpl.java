@@ -5,21 +5,27 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
 @Log4j2
-//@RequiredArgsConstructor // autowired
+@RequiredArgsConstructor // autowired
 public class BoardRepositoryImpl implements BoardRepository{
 
     private final JdbcTemplate template;
 
+    /*
     @Autowired
     public BoardRepositoryImpl(JdbcTemplate template) {
         this.template = template;
     }
+
+     */
 
     @Override
     public boolean save(Board board) {
@@ -50,5 +56,12 @@ public class BoardRepositoryImpl implements BoardRepository{
     public boolean Modify(Board board) {
         String sql = "UPDATE tbl_board SET writer=?, title=?, content=? WHERE board_no=?";
         return template.update(sql, board.getWriter(), board.getTitle(), board.getContent(),board.getBoardNo())==1;
+    }
+
+    @Override
+    public int getTotalCount() {
+        String sql = "SELECT COUNT(*) as cnt FROM tbl_board";
+        // 단건조회 -> QFO
+        return template.queryForObject(sql, Integer.class);
     }
 }

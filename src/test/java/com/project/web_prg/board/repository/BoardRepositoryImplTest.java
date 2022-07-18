@@ -86,4 +86,12 @@ class BoardRepositoryImplTest {
 
     }
 
+
+    @Test
+    @DisplayName("전체 게시글 수를 조회해야한다")
+    void countT(){
+        int totalCount = repository.getTotalCount();
+        assertTrue(totalCount==300);
+    }
+
 }

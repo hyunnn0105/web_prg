@@ -18,4 +18,7 @@ public interface BoardRepository {
     boolean remove(Long boardNo);
     // 여러 정보 받기
     boolean Modify(Board board);
+
+    // 전체 게시물 수 조회
+    int getTotalCount();
 }
