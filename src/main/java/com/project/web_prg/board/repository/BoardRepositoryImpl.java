@@ -53,7 +53,7 @@ public class BoardRepositoryImpl implements BoardRepository{
     }
 
     @Override
-    public boolean Modify(Board board) {
+    public boolean modify(Board board) {
         String sql = "UPDATE tbl_board SET writer=?, title=?, content=? WHERE board_no=?";
         return template.update(sql, board.getWriter(), board.getTitle(), board.getContent(),board.getBoardNo())==1;
     }

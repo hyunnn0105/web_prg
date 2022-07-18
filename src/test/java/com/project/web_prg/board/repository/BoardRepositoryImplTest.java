@@ -1,6 +1,7 @@
 package com.project.web_prg.board.repository;
 
 import com.project.web_prg.board.domain.Board;
+import com.project.web_prg.board.service.BoardService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,20 @@ class BoardRepositoryImplTest {
     @Autowired // bean 등록X
 //            @Qualifier("boardRepositoryImpl") -> Bean 등록 여러개 할때?
     BoardRepository repository;
+
+    @Autowired
+    BoardService service;
     
+    @Test
+    @DisplayName("게시물 전체조회")
+    void findAllTest(){
+        List<Board> boardList = service.findAllService();
+        boardList.forEach(System.out::println);
+
+        assertEquals(300,boardList.size());
+        assertEquals("제목300", boardList.get(0).getTitle());
+    }
+
     @Test
     @DisplayName("300개의 게시물을 삽입해야 한다")
     // junit5부터
@@ -75,7 +89,7 @@ class BoardRepositoryImplTest {
         newboard.setWriter("수정된 작성자");
         newboard.setContent("hihihihiih");
 
-        boolean modify = repository.Modify(newboard);
+        boolean modify = repository.modify(newboard);
         Board board = repository.findOne(newboard.getBoardNo());
 
         assertTrue(modify);
