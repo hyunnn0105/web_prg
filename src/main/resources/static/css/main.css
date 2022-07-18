@@ -29,6 +29,10 @@ header {
     top: 0;
     z-index: 1000;
 }
+header {
+    background: #222;
+    border-bottom: 1px solid #2c2c2c;
+}
 
 header.on {
     background: #222;
