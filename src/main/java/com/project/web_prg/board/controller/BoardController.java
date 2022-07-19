@@ -22,7 +22,7 @@ public class BoardController {
     public String list(Model model){
         log.info("controller requ /board/list GET");
         List<Board> boardList = boardService.findAllService();
-        log.info("return data -{}", boardList);
+        log.debug("return data -{}", boardList);
 
         model.addAttribute("bList", boardList);
         return "board/board-list";
@@ -53,4 +53,31 @@ public class BoardController {
         boolean flag = boardService.saveService(board);
         return flag ? "redirect:/board/list" : "redirect:/";
     }
+
+    // 게시물 삭제 요청
+    @GetMapping("/delete")
+    public String delete(Long boardNo){
+        log.info("controller req /board/delete GET - {}", boardNo);
+        return boardService.removeService(boardNo) ? "redirect:/board/list" : "redirect:/";
+    }
+
+    // 수정화면 요청 GET --> overloding 규칙 위반 (안에 들어가는 값이 달라야한다)
+    @GetMapping("/modify")
+    public String modify(Long boardNo, Model model){
+        log.info("controller req /board/modify GET! - bno {}", boardNo);
+        Board board = boardService.findOneService(boardNo);
+        model.addAttribute("board", board);
+//        return boardService.modifyService(board) ? "redirect:/board/list" :"redirect:/";
+        return "board/board-modify";
+    }
+
+
+    // 수정 처리 요청 POST-> ㅠㅏ라미터 방식으로 값 넘기기 X
+    @PostMapping("/modify")
+    public String modify(Board board){
+        log.info("controller req /board/modify POST - {}", board);
+        boolean flag = boardService.modifyService(board);
+        return flag ? "redirect:/board/content/" + board.getBoardNo() : "redirect:/";
+    }
+
 }
