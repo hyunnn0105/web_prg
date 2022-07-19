@@ -98,7 +98,7 @@
                         </c:if>
 
                       <c:forEach var="n" begin="${pm.beginPage}" end="${pm.endPage}" step="1">
-                        <li class="page-item">
+                        <li class="page-item" id="pageNum">
                             <a class="page-link" href="/board/list?pageNum=${n}">${n}</a>
                         </li>
                       </c:forEach>
@@ -122,6 +122,21 @@
     </div>
 
     <script>
+
+        let current = '${pm.page.getPageNum()}';
+        let get = document.getElementById('page-link').innerText;
+        console.log('current : ', current);
+        console.log('get : ', get);
+
+        if(current == get){
+                for (let i = 0; i < get.length; i++) {
+                    get[i].addEventListener("click", function name(params) {
+                        
+                    }
+                    )
+                    
+                }
+        }
 
         const msg = '${msg}';
         console.log('msg: ', msg);

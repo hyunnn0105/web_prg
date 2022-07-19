@@ -33,14 +33,7 @@ public class BoardRepositoryImpl implements BoardRepository{
 
     @Override
     public List<Board> findAll() {
-        String sql = "SELECT  *\n" +
-                "FROM (SELECT ROWNUM rn, v_board.*\n" +
-                "        FROM (\n" +
-                "                SELECT *\n" +
-                "                FROM tbl_board\n" +
-                "                ORDER BY board_no DESC\n" +
-                "                ) v_board)\n" +
-                "WHERE rn BETWEEN 1 AND 10";
+        String sql = "SELECT * FROM tbl_board";
         return template.query(sql,(rs,rn) -> new Board(rs));
     }
 
@@ -51,7 +44,7 @@ public class BoardRepositoryImpl implements BoardRepository{
             만약에 1페이지를 보고싶고 10개씩 보고 싶으면
             1 AND 10
             11 AND 20
-            1AND 20
+            1 AND 20
             21 AND 40
             공식 : BETWEEN {pageNum - 1 * amount + 1} and {pageNum*amount}
          */
