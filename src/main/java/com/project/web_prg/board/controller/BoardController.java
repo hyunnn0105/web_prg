@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,10 +50,15 @@ public class BoardController {
     // 게시물 등록 화면 요청
     @PostMapping("/write")
 //    public String write(@RequestBody Board board){ <- test용
-    public String write( Board board){
+    // model -> fowarding / 
+    public String write(Board board, RedirectAttributes ra){
         log.info("controller request /board/write POST! - {}", board);
         // db 넣기
         boolean flag = boardService.saveService(board);
+        // 게시글 등록에 성공하면 클라이언트에 성공메세지 전송 
+        //BUT req에 담은거라 msg 값이 리다이렉트 되는 순간 값이 사라진다
+        // RedirectAttributes / addFlashAttribute 사용해서 (글쓰기를 통한 리다이렉트 목록 요청시 success) 값을 전달한다
+        if (flag) ra.addFlashAttribute("msg","reg-success");
         return flag ? "redirect:/board/list" : "redirect:/";
     }
 

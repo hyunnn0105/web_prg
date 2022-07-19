@@ -68,6 +68,15 @@
     </div>
 
     <script>
+
+        const msg = '${msg}';
+        console.log(msg);
+
+        if (msg == 'reg-success') {
+            alert('게시글이 정상 등록되었습니다.');
+            
+        }
+
         //상세보기 요청 이벤트 - table을 전부 가져옴(버블링)
         const $table = document.querySelector(".articles");
         $table.addEventListener('click', e => {

@@ -88,8 +88,8 @@ public class BoardService {
         
         // 해당 게시물 번호에 해당하는 쿠키가 있는지 확인
         // 1. 쿠키가 없으면 조회수를 상승시켜주고 2.쿠키를 만들어서 클라이언트에 전송
-
-
+        
+        // 쿠키 -> 조회수를 올려주는 것에대해 판단?
         makeViewCount(boardNo, response, request);
 
 
@@ -109,8 +109,11 @@ public class BoardService {
             cookie.setMaxAge(60); // 쿠키 수명 설정(초단위) 60 * 60 이런식으로 설정 가능
             cookie.setPath("/board/content"); // cookie 작동 범위->컨텐트 아래 전부
 
+            // 응답시 쿠키 전달해서 간다
             response.addCookie(cookie); //클라이언트에 쿠키 전송
         }
+        
+        // 세션 -> 쿠키를 삭제해도 남아있음 but 브라우저 창을 여러개 띄워서 올릴수있음
     }
 
     // 게시물 삭제 요청 중간 처리
