@@ -1,5 +1,6 @@
 package com.project.web_prg.board.service;
 
+import com.project.web_prg.board.common.Page;
 import com.project.web_prg.board.domain.Board;
 import com.project.web_prg.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,22 @@ public class BoardService {
         // 글제목 줄임처리
         substringTitle(boardList);
         
+        // 시간포멧팅 처리
+        convertDateFormat(boardList);
+
+        return boardList;
+    }
+
+    public List<Board> findAllService(Page page){
+        log.info("findall service start");
+        List<Board> boardList = repository.findAll(page);
+
+        // 목록 중간데이터 처리
+        // processConverting(boardList);
+
+        // 글제목 줄임처리
+        substringTitle(boardList);
+
         // 시간포멧팅 처리
         convertDateFormat(boardList);
 

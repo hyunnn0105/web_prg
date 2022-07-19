@@ -1,5 +1,6 @@
 package com.project.web_prg.board.controller;
 
+import com.project.web_prg.board.common.Page;
 import com.project.web_prg.board.domain.Board;
 import com.project.web_prg.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,9 @@ public class BoardController {
 
     // 게시글 목록 요청
     @GetMapping("/list")
-    public String list(Model model){
+    public String list(Page page, Model model){
         log.info("controller requ /board/list GET");
-        List<Board> boardList = boardService.findAllService();
+        List<Board> boardList = boardService.findAllService(page);
         log.debug("return data -{}", boardList);
 
         model.addAttribute("bList", boardList);

@@ -1,5 +1,6 @@
 package com.project.web_prg.board.repository;
 
+import com.project.web_prg.board.common.Page;
 import com.project.web_prg.board.domain.Board;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,8 +33,41 @@ public class BoardRepositoryImpl implements BoardRepository{
 
     @Override
     public List<Board> findAll() {
-        String sql = "SELECT * FROM tbl_board ORDER BY board_no DESC";
+        String sql = "SELECT  *\n" +
+                "FROM (SELECT ROWNUM rn, v_board.*\n" +
+                "        FROM (\n" +
+                "                SELECT *\n" +
+                "                FROM tbl_board\n" +
+                "                ORDER BY board_no DESC\n" +
+                "                ) v_board)\n" +
+                "WHERE rn BETWEEN 1 AND 10";
         return template.query(sql,(rs,rn) -> new Board(rs));
+    }
+
+    @Override
+    public List<Board> findAll(Page page) {
+
+        /*
+            만약에 1페이지를 보고싶고 10개씩 보고 싶으면
+            1 AND 10
+            11 AND 20
+            1AND 20
+            21 AND 40
+            공식 : BETWEEN {pageNum - 1 * amount + 1} and {pageNum*amount}
+         */
+        String sql = "SELECT  *\n" +
+                "FROM (SELECT ROWNUM rn, v_board.*\n" +
+                "        FROM (\n" +
+                "                SELECT *\n" +
+                "                FROM tbl_board\n" +
+                "                ORDER BY board_no DESC\n" +
+                "                ) v_board)\n" +
+                "WHERE rn BETWEEN ? AND ?";
+        return template.query(sql, (rs, rn) -> new Board(rs)
+                , (page.getPageNum() - 1) * page.getAmount() + 1
+                , page.getPageNum() * page.getAmount()
+        );
+
     }
 
     @Override
