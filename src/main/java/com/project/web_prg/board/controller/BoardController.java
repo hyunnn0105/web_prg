@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -39,8 +38,11 @@ public class BoardController {
         return "board/board-list";
     }
 
+    // controller 수정
     @GetMapping("/content/{boardNo}")
-    public String content(@PathVariable Long boardNo, Model model, HttpServletResponse response, HttpServletRequest request){
+    public String content(@PathVariable Long boardNo, Model model,
+                          HttpServletResponse response, HttpServletRequest request
+                            , @ModelAttribute("p") Page page){
         log.info("controller request /board/list GET");
         Board board = boardService.findOneService(boardNo, response,request);
         log.info("return data - {}", board);

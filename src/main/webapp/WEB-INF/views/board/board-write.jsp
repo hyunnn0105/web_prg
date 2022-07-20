@@ -96,7 +96,7 @@
         //목록버튼 이벤트
         const $toList = document.getElementById('to-list');
         $toList.onclick = e => {
-            location.href = '/board/list';
+            location.href = '/board/list?pageNum=${p.pageNum}&amount=${p.amount}';
         };
     </script>
 

@@ -55,13 +55,13 @@
     <link rel="stylesheet" href="/css/main.css">
 
     <!-- jquery -->
-    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
 
     <!-- libraries -->
     <!-- scrolla js -->
-    <script src="js/scrolla.jquery.min.js" defer></script>
+    <script src="/js/scrolla.jquery.min.js" defer></script>
     <!-- slick js -->
-    <script src="js/slick.min.js" defer></script>
+    <script src="/js/slick.min.js" defer></script>
     <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
