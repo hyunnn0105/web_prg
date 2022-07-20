@@ -1,6 +1,7 @@
 package com.project.web_prg.board.service;
 
 import com.project.web_prg.board.common.paging.Page;
+import com.project.web_prg.board.common.search.Search;
 import com.project.web_prg.board.mybatis.domain.Board;
 import com.project.web_prg.board.mybatis.repository.BoardMapper;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,29 @@ public class BoardService {
         HashMap<String, Object> findDataMap = new HashMap<>();
 
         List<Board> boardList = repository.findAll(page);
+
+        // 목록 중간데이터 처리
+        // processConverting(boardList);
+
+        // 글제목 줄임처리
+        substringTitle(boardList);
+
+        // 시간포멧팅 처리
+        convertDateFormat(boardList);
+
+        // map에 리스트 + totalCount
+        findDataMap.put("bList", boardList);
+        findDataMap.put("tc", repository.getTotalCount());
+
+        return findDataMap;
+    }
+
+    public Map<String, Object> findAllService(Search search){
+        log.info("findall service start");
+
+        HashMap<String, Object> findDataMap = new HashMap<>();
+
+        List<Board> boardList = repository.findAll2(search);
 
         // 목록 중간데이터 처리
         // processConverting(boardList);

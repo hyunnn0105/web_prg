@@ -23,7 +23,8 @@ class BoardRepositoryImplTest {
 
     @Autowired
     BoardService service;
-    
+
+    /*
     @Test
     @DisplayName("게시물 전체조회")
     void findAllTest(){
@@ -33,6 +34,8 @@ class BoardRepositoryImplTest {
         assertEquals(300,boardList.size());
         assertEquals("제목300", boardList.get(0).getTitle());
     }
+
+     */
 
     @Test
     @DisplayName("300개의 게시물을 삽입해야 한다")

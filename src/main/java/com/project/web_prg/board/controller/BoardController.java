@@ -2,6 +2,7 @@ package com.project.web_prg.board.controller;
 
 import com.project.web_prg.board.common.paging.Page;
 import com.project.web_prg.board.common.paging.PageMaker;
+import com.project.web_prg.board.common.search.Search;
 import com.project.web_prg.board.mybatis.domain.Board;
 import com.project.web_prg.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +25,20 @@ public class BoardController {
 
     // 게시글 목록 요청
     @GetMapping("/list")
-    public String list(Page page, Model model){
-        log.info("controller requ /board/list GET");
+    public String list(Search search, Model model){
+        log.info("controller requ /board/list GET : {}", search);
 
-        Map<String, Object> boardMap = boardService.findAllService(page);
+        Map<String, Object> boardMap = boardService.findAllService(search);
         log.debug("return data -{}", boardMap);
 
         // 페이지 정보 생성
-        PageMaker pm = new PageMaker(page, (Integer) boardMap.get("tc"));
+        PageMaker pm = new PageMaker(new Page(search.getPageNum(), search.getAmount())
+                , (Integer) boardMap.get("tc"));
+
+        log.info("totalcount - {}", pm);
+        // http://localhost:8185/board/list?type=tc&keyword=%ED%95%98%ED%95%98
+        //totalcount - PageMaker(beginPage=1, endPage=10, prev=false, next=true, page=Page(pageNum=1, amount=10), totalCount=306)
+        // endpage 값이랑 total이랑,,,
 
         model.addAttribute("bList", boardMap.get("bList"));
         model.addAttribute("pm", pm);

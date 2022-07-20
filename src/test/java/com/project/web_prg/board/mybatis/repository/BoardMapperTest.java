@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class BoardMapperTest {
@@ -48,5 +48,15 @@ class BoardMapperTest {
     }
 
      */
+    @Test
+    @DisplayName("제목으로 검색된 목록을 조회해야 한다.")
+    void serachTest(){
+//        Search search = new Search(
+//                new Page(1,10)
+//                ,"hello"
+//                ,""
+//        );
+//        mapper.findAll2(search).forEach(System.out::println);
+    }
 
 }
