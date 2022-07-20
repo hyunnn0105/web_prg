@@ -1,4 +1,4 @@
-package com.project.web_prg.board.domain;
+package com.project.web_prg.board.mybatis.domain;
 
 import lombok.*;
 

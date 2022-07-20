@@ -1,8 +1,8 @@
 package com.project.web_prg.board.service;
 
-import com.project.web_prg.board.common.Page;
-import com.project.web_prg.board.domain.Board;
-import com.project.web_prg.board.repository.BoardRepository;
+import com.project.web_prg.board.common.paging.Page;
+import com.project.web_prg.board.mybatis.domain.Board;
+import com.project.web_prg.board.mybatis.repository.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -23,13 +23,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BoardService {
 
-    private final BoardRepository repository;
+//    private final BoardRepository repository;
+    private final BoardMapper repository;
     // 게시물 등록 요청 중간 처리
     public boolean saveService(Board board){
         log.info("save service start - {}", board);
         return repository.save(board);
     }
 
+    /*
     // 게시글 전체 조회 요청 중간 처리
     public List<Board> findAllService(){
         log.info("findall service start");
@@ -46,6 +48,8 @@ public class BoardService {
 
         return boardList;
     }
+
+     */
 
     public Map<String, Object> findAllService(Page page){
         log.info("findall service start");

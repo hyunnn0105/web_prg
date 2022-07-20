@@ -1,12 +1,11 @@
 package com.project.web_prg.board.repository;
 
-import com.project.web_prg.board.common.Page;
-import com.project.web_prg.board.domain.Board;
+import com.project.web_prg.board.common.paging.Page;
+import com.project.web_prg.board.mybatis.domain.Board;
 import com.project.web_prg.board.service.BoardService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;

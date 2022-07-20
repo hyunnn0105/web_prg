@@ -1,4 +1,4 @@
-package com.project.web_prg.board.common;
+package com.project.web_prg.board.common.paging;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

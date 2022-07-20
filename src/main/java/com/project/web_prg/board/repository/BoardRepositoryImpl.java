@@ -1,7 +1,7 @@
 package com.project.web_prg.board.repository;
 
-import com.project.web_prg.board.common.Page;
-import com.project.web_prg.board.domain.Board;
+import com.project.web_prg.board.common.paging.Page;
+import com.project.web_prg.board.mybatis.domain.Board;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,8 +1,8 @@
 package com.project.web_prg.board.controller;
 
-import com.project.web_prg.board.common.Page;
+import com.project.web_prg.board.common.paging.Page;
 import com.project.web_prg.board.common.paging.PageMaker;
-import com.project.web_prg.board.domain.Board;
+import com.project.web_prg.board.mybatis.domain.Board;
 import com.project.web_prg.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

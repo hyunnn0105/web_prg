@@ -1,6 +1,5 @@
 package com.project.web_prg.board.common.paging;
 
-import com.project.web_prg.board.common.Page;
 import com.project.web_prg.board.repository.BoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

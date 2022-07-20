@@ -1,17 +1,18 @@
-package com.project.web_prg.board.repository;
+package com.project.web_prg.board.mybatis.repository;
 
 import com.project.web_prg.board.common.paging.Page;
 import com.project.web_prg.board.mybatis.domain.Board;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
-public interface BoardRepository {
+@Mapper
+public interface BoardMapper {
     // 게시글 쓰기 기능
     // sql -> insert ino
      boolean save(Board board);
      
      // 게시글 전체 조회
-    List<Board> findAll();
+//    List<Board> findAll();
 
     List<Board>findAll(Page page);
     

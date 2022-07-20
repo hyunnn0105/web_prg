@@ -1,6 +1,5 @@
 package com.project.web_prg.board.common.paging;
 
-import com.project.web_prg.board.common.Page;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
