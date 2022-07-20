@@ -93,6 +93,8 @@ public class PageMaker {
             this.endPage = realEnd;
         }
 
+
+
         // 이전버튼 활성화 여부
         this.prev = beginPage > 1;
 

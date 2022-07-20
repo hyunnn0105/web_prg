@@ -51,7 +51,7 @@ public class BoardService {
     }
 
      */
-
+/*
     public Map<String, Object> findAllService(Page page){
         log.info("findall service start");
 
@@ -75,25 +75,27 @@ public class BoardService {
         return findDataMap;
     }
 
+ */
+
     public Map<String, Object> findAllService(Search search){
         log.info("findall service start");
 
         HashMap<String, Object> findDataMap = new HashMap<>();
 
         List<Board> boardList = repository.findAll2(search);
+        System.out.println(boardList);
 
         // 목록 중간데이터 처리
         // processConverting(boardList);
 
         // 글제목 줄임처리
         substringTitle(boardList);
-
         // 시간포멧팅 처리
         convertDateFormat(boardList);
 
         // map에 리스트 + totalCount
         findDataMap.put("bList", boardList);
-        findDataMap.put("tc", repository.getTotalCount());
+        findDataMap.put("tc", repository.getTotalCount(search));
 
         return findDataMap;
     }

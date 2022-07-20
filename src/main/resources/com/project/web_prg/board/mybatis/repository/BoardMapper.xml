@@ -74,7 +74,7 @@
     <update id="upViewCount">
         UPDATE tbl_board
         SET view_cnt = view_cnt + 1
-        WHERE board_no=#{boardNo}
+        WHERE board_no = #{boardNo}
     </update>
 
 
