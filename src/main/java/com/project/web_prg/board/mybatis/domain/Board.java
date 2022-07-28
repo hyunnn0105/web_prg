@@ -26,6 +26,8 @@ public class Board {
     // 커스텀 데이터 필드
     private String shortTitle; // 줄임제목
     private String prettierDate; // 변경된 날짜포맷 문자열
+    private boolean newArticle;
+    private int replyCount;
 
     // Board-> 시분초 나오게 하기
     public Board(ResultSet rs) throws SQLException {
@@ -37,4 +39,6 @@ public class Board {
         this.regDate = rs.getTimestamp("reg_date");
 
     }
+
+
 }

@@ -25,7 +25,8 @@ public class BoardController {
 
     // 게시글 목록 요청
     @GetMapping("/list")
-    public String list(Search search, Model model){
+    // jsp로 날릴때 @ModelAttribute
+    public String list(@ModelAttribute("s") Search search, Model model){
         log.info("controller requ /board/list GET : {}", search);
 
         Map<String, Object> boardMap = boardService.findAllService(search);
