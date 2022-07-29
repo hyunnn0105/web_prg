@@ -40,16 +40,13 @@
         }
 
         /* 페이지 액티브 기능 */
-        .pagination .page-item.p-active a{
+        .pagination .page-item.p-active a {
             background: #333 !important;
             color: #fff !important;
-            /* 엑티브 된 페이지는 클릭 불가 */
-            cursor: default;
-            pointer-events: none;
         }
-
         .pagination .page-item:hover a {
             background: #888 !important;
+            color: #fff !important;
         }
     </style>
 </head>
@@ -82,13 +79,11 @@
 
             </div>
 
-            <div class="btn-group btn-group-lg custom-btn-group" role="group" >
+            <div class="btn-group btn-group-lg custom-btn-group" role="group">
                 <button id="mod-btn" type="button" class="btn btn-warning">수정</button>
                 <button id="del-btn" type="button" class="btn btn-danger">삭제</button>
                 <button id="list-btn" type="button" class="btn btn-dark">목록</button>
             </div>
-
-            <!-- 댓글 영역 -->
 
             <!-- 댓글 영역 -->
 
@@ -130,7 +125,6 @@
 
                         <!-- 댓글 내용 바디 -->
                         <div id="replyCollapse" class="card">
-                            <!-- 댓글 데이터 여기서 가져옴!!! -->
                             <div id="replyData">
                                 <!-- 
                         < JS로 댓글 정보 DIV삽입 > 
@@ -177,24 +171,22 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <!-- end replyModifyModal -->
 
+
+
         </div>
 
+
         <%@ include file="../include/footer.jsp" %>
-
-
     </div>
 
 
-    <!-- 게시글 관련 js -->
-    
+    <!-- 게시글 상세보기 관련 script -->
     <script>
-       const [$modBtn, $delBtn, $listBtn] 
-        = [...document.querySelector('div[role=group]').children];
+        const [$modBtn, $delBtn, $listBtn] = [...document.querySelector('div[role=group]').children];
 
         // const $modBtn = document.getElementById('mod-btn');
         //수정버튼
@@ -204,7 +196,7 @@
 
         //삭제버튼
         $delBtn.onclick = e => {
-            if(!confirm('정말 삭제하시겠습니까?')) {
+            if (!confirm('정말 삭제하시겠습니까?')) {
                 return;
             }
             location.href = '/board/delete?boardNo=${b.boardNo}';
@@ -215,64 +207,58 @@
         };
     </script>
 
-    <!-- 댓글관련 js -->
 
+    <!-- 댓글관련 script -->
     <script>
-        // 원본 글 번호
+        //원본 글 번호
         let bno = '${b.boardNo}';
-        // console.log(bno);
+        // console.log('bno:', bno);
 
-        // 댓글요청 url
+        // 댓글 요청 URL
         const URL = '/api/v1/replies';
-        // const URL = '/api/v1/replies/3/11';
-        // 3번글의 11페이지 /글번호/페이지번호 **
 
         //날짜 포맷 변환 함수
         function formatDate(datetime) {
-                //문자열 날짜 데이터를 js날짜객체로 변환
-                const dateObj = new Date(datetime);
-                // console.log(dateObj);
-
-                // getter를 통해 분리해주기
-                //날짜객체를 통해 각 날짜 정보 얻기
-                let year = dateObj.getFullYear();
-                //1월이 0으로 설정되어있음.
-                let month = dateObj.getMonth() + 1;
-                let day = dateObj.getDate();
-                let hour = dateObj.getHours();
-                let minute = dateObj.getMinutes();
-                //오전, 오후 시간체크
-                let ampm = '';
-                if (hour < 12 && hour >= 6) {
-                    ampm = '오전';
-                } else if (hour >= 12 && hour < 21) {
-                    ampm = '오후';
-                    if (hour !== 12) {
-                        hour -= 12;
-                    }
-                } else if (hour >= 21 && hour <= 24) {
-                    ampm = '밤';
+            //문자열 날짜 데이터를 날짜객체로 변환
+            const dateObj = new Date(datetime);
+            // console.log(dateObj);
+            //날짜객체를 통해 각 날짜 정보 얻기
+            let year = dateObj.getFullYear();
+            //1월이 0으로 설정되어있음.
+            let month = dateObj.getMonth() + 1;
+            let day = dateObj.getDate();
+            let hour = dateObj.getHours();
+            let minute = dateObj.getMinutes();
+            //오전, 오후 시간체크
+            let ampm = '';
+            if (hour < 12 && hour >= 6) {
+                ampm = '오전';
+            } else if (hour >= 12 && hour < 21) {
+                ampm = '오후';
+                if (hour !== 12) {
                     hour -= 12;
-                } else {
-                    ampm = '새벽';
                 }
-                //숫자가 1자리일 경우 2자리로 변환
-                (month < 10) ? month = '0' + month: month;
-                (day < 10) ? day = '0' + day: day;
-                (hour < 10) ? hour = '0' + hour: hour;
-                (minute < 10) ? minute = '0' + minute: minute;
-                return year + "-" + month + "-" + day + " " + ampm + " " + hour + ":" + minute;
+            } else if (hour >= 21 && hour <= 24) {
+                ampm = '밤';
+                hour -= 12;
+            } else {
+                ampm = '새벽';
+            }
+            //숫자가 1자리일 경우 2자리로 변환
+            (month < 10) ? month = '0' + month: month;
+            (day < 10) ? day = '0' + day: day;
+            (hour < 10) ? hour = '0' + hour: hour;
+            (minute < 10) ? minute = '0' + minute: minute;
+            return year + "-" + month + "-" + day + " " + ampm + " " + hour + ":" + minute;
         }
 
 
         // 댓글 페이지 태그 생성 렌더링 함수
-        // 객체는 쪼개서 넣어줄 수 있음 {beginPage, endPage}
         function makePageDOM(pageInfo) {
             let tag = "";
             const begin = pageInfo.beginPage;
             const end = pageInfo.endPage;
-            //이전 버튼 만들기 - ture면 생성
-            // href를 비동기로 처리?(버튼X)
+            //이전 버튼 만들기
             if (pageInfo.prev) {
                 tag += "<li class='page-item'><a class='page-link page-active' href='" + (begin - 1) +
                     "'>이전</a></li>";
@@ -289,47 +275,46 @@
                 tag += "<li class='page-item'><a class='page-link page-active' href='" + (end + 1) +
                     "'>다음</a></li>";
             }
-            
-            // 페이지 태그 랜더링
-            const $pageUl = document.querySelector('.pagination');
-            $pageUl.innerHTML = tag;
-            $pageUl.dataset.fp = pageInfo.$pageUl; // 수정????
-            // document.querySelector('.pagination').innerHTML = tag;
-            
+
+            // 페이지태그 렌더링
+            document.querySelector('.pagination').innerHTML = tag;
+
         }
 
-        // 댓글목록 돔을 생성하는 함수
-        // 여기에서도 디스트럭쳐링 가능! -> count만 추가해주기
-        function makeReplyDOM({replyList, count, maker}) {
+
+        // 댓글 목록 DOM을 생성하는 함수
+        function makeReplyDOM({
+            replyList,
+            count,
+            maker
+        }) {
+
             if (replyList === null || replyList.length === 0) {
-                // 아직 댓글이 없습니다 이런 메세지 만ㄴ들기
-                // li 만들어서 안에 텍스트 콘텐츠 추가하기?
-                //const make = document.createElement('li');
                 return;
             }
-            
-            let tag = '';
+
 
             // 각 댓글 하나의 태그
+            let tag = '';
+
             for (let rep of replyList) {
                 tag += "<div id='replyContent' class='card-body' data-replyId='" + rep.replyNo + "'>" +
-                        "    <div class='row user-block'>" +
-                        "       <span class='col-md-3'>" +
-                        "         <b>" + rep.replyWriter + "</b>" +
-                        "       </span>" +
-                        "       <span class='offset-md-6 col-md-3 text-right'><b>" + formatDate(rep.replyDate) +
-                        "</b></span>" +
-                        "    </div><br>" +
-                        "    <div class='row'>" +
-                        "       <div class='col-md-6'>" + rep.replyText + "</div>" +
-                        "       <div class='offset-md-2 col-md-4 text-right'>" +
-                        "         <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;" +
-                        "         <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>" +
-                        "       </div>" +
-                        "    </div>" +
-                        " </div>";
-            
-                    }
+                    "    <div class='row user-block'>" +
+                    "       <span class='col-md-3'>" +
+                    "         <b>" + rep.replyWriter + "</b>" +
+                    "       </span>" +
+                    "       <span class='offset-md-6 col-md-3 text-right'><b>" + formatDate(rep.replyDate) +
+                    "</b></span>" +
+                    "    </div><br>" +
+                    "    <div class='row'>" +
+                    "       <div class='col-md-6'>" + rep.replyText + "</div>" +
+                    "       <div class='offset-md-2 col-md-4 text-right'>" +
+                    "         <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;" +
+                    "         <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>" +
+                    "       </div>" +
+                    "    </div>" +
+                    " </div>";
+            }
 
             // 댓글 목록에 생성된 DOM 추가
             document.getElementById('replyData').innerHTML = tag;
@@ -337,9 +322,23 @@
             // 댓글 수 배치
             document.getElementById('replyCnt').textContent = count;
 
-
             // 페이지 렌더링
             makePageDOM(maker);
+
+            // 페이지 버튼 클릭이벤트 처리
+            const $pageUl = document.querySelector('.pagination');
+            $pageUl.addEventListener('click', e => {
+                if (!e.target.matches('.page-item a')) return;
+
+                e.preventDefault();
+                // 누른 페이지 번호 가져오기
+                const pageNum = e.target.getAttribute('href');
+                // console.log(pageNum);
+
+                // 페이지 번호에 맞는 목록 비동기 요청
+                showReplies(pageNum);
+            });
+
         }
 
         // 댓글 목록을 서버로부터 비동기요청으로 불러오는 함수
@@ -352,126 +351,14 @@
                 });
         }
 
-
-
-        // 댓글 등록 이벤트 처리 핸들러 등록 함수
-        function makeReplyRegisterClickEvent(e) {
-            
-            document.getElementById('replyAddBtn').onclick 
-            = makeReplyRegisterClickHandler;
-        }
-
-
-        // 댓글 등록 이벤트 처리 핸들러 함수
-        function makeReplyRegisterClickHandler(e) {
-
-            const $writerInput = document.getElementById('newReplyWriter');
-            const $contentInput = document.getElementById('newReplyText');
-
-            // 서버로 전송할 데이터들
-            const replyData = {
-                replyWriter: $writerInput.value,
-                replyText: $contentInput.value,
-                boardNo: bno
-            };
-            
-            // POST 요청을 위한 요청정보 객체
-            const reqInfo = {
-                method: 'POST'
-                , headers: {
-                    'content-type' : 'application/json'
-                }
-                , body: JSON.stringify(replyData)
-            };
-
-            fetch(URL, reqInfo)
-            .then(res => res.test())
-            .then(msg => {
-                    console.log(msg);
-                    if (msg === 'insert-success') {
-                        alert('저장성공');
-                        // 댓글 리셋
-                        $writerInput.value = '';
-                        $contentInput.value = '';
-                        // 댓글목록재요청
-                        showReplies(document.querySelector('.pagenation').dataset.fp);
-                        // focus 함수로 등록된 ul 자리로 이동하기
-                    } else {
-                        alert('실패');
-                    }
-                });
-        }
-
-
-        // main 실행부 **즉시실행함수 (function(){})() 이거임
+        // 메인 실행부
         (function () {
+
             showReplies();
 
-            //페이지버튼처리 랜더링
-            // 여기서 최초의 한번만!! 실행시켜주기
-            const $pageUl = document.querySelector('.pagination');
-            $pageUl.addEventListener('click', e => {
-                if(e.target.matches('.page-item a')) return;
-
-                e.preventDefault();
-
-                // 누른 페이지 번호 가져오기
-                const pageNum = e.target.getAttribute('href');
-                console.log(pageNum);
-
-                showReplies(pageNum);
-            })
-            // 댓글등록 이벤트 처리 함수
-
-            makeReplyRegisterClickHandler();
-
         })();
-        
-
-
-
-        // 댓글 저장
-
-        // fetch(url + '?boardNo=' + bno )
-        //     .then(res => req.json())
-        //     .then(replyMap=> {
-        //         makeReplyDOM(replyMap.replyList);
-        //     })
-
-        /*
-
-        document.getElementById('replyAddBtn').onclick = e => {
-            e.preventDefault();
-
-            const reqObj = {
-                method : 'POST',
-                headers : {
-                    'content-type' : 'aplication/json'
-                },
-                body : JSON.stringify({
-                    "replyText": document.querySelector('[name=replyText]').value,
-                    "replyWriter": document.querySelector('[name=replyWriter]').value,
-                    boardNo : bno
-                })
-            };
-
-            // fetch
-            fetch(url, reqObj)
-                .then(res => res.text())
-                .then(resultmsg => {
-                    console.log(resultmsg);
-                    if (resultmsg === 'insert-success') {
-                        alert('저장성공');
-                    } else {
-                        alert('실패');
-                    }
-                });
-
-
-        }
-        */
-
     </script>
+
 </body>
 
 </html>

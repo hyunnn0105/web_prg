@@ -36,6 +36,23 @@ class ReplyMapperTest {
     }
 
     @Test
+    @DisplayName("댓글 200개를 하나의 게시물에 등록해야 한다.")
+    void savereplieTest() {
+
+        for (int i = 1; i <= 200; i++) {
+            long bno = 301;
+
+            Reply reply = new Reply();
+            reply.setBoardNo(bno);
+            reply.setReplyText("댓글" + i);
+            reply.setReplyWriter("메롱이" + i);
+
+            replyMapper.save(reply);
+        }
+
+    }
+
+    @Test
     @DisplayName("댓글 내용을 수정, 개별조회해야 한다.")
     void modifyTest() {
 

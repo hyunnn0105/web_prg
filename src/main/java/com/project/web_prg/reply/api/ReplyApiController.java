@@ -12,6 +12,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Log4j2
+@CrossOrigin
 @RequestMapping("/api/v1/replies")
 public class ReplyApiController {
 
@@ -42,7 +43,7 @@ public class ReplyApiController {
     public String create(@RequestBody Reply reply){
         log.info("/api/v1/replies POST - {}", reply);
         boolean flag = replyService.write(reply);
-        return flag ? "success" : "fail";
+        return flag ? "insert-success" : "fail";
     }
 
     // 댓글 수정 요청
