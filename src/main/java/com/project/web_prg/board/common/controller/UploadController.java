@@ -53,13 +53,15 @@ public class UploadController {
 
             // 1. 세이브파일 객체 생성
             //  - 첫번째 파라미터는 파일 저장경로 지정, 두번째 파일명지정
-        /*File f = new File(uploadPath, file.getOriginalFilename());
+            /*
+            File f = new File(uploadPath, file.getOriginalFilename());
 
-        try {
-            file.transferTo(f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+            try {
+                file.transferTo(f);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            */
 
             FileUtils.uploadFile(file, UPLOADPATH);
         }
@@ -73,6 +75,7 @@ public class UploadController {
     public List<String> ajaxUpload(List<MultipartFile> files){
         log.info("/ajax-upload POST - {}", files.get(0).getOriginalFilename());
         //form data는 파라미터 받는것처럼 받으면 된다
+        // Q > origin file 이름 받아서 자르는 이유??
 
         // 클라이언트에게 전송할 파일 경로 리스트
         List<String> fileNames = new ArrayList<>();
@@ -93,9 +96,11 @@ public class UploadController {
         추가로 응답 상태코드도 제어할 수 있다.
      */
 
+    // @GetMapping ?
+    // 이미지를 화면에 불러와서 보여줘서 Getmapping
     @GetMapping("/loadFile")
     @ResponseBody
-    public ResponseEntity loadFile(String fileName){
+    public ResponseEntity<byte[]> loadFile(String fileName){
         
         log.info("upload Controller loadFile GET - {}", fileName);
         
@@ -129,6 +134,7 @@ public class UploadController {
             // (중요) 5. 비동기 통신에서 데이터 응답할 떄 ResponseEntity 객체를 사용
             return new ResponseEntity<>(rawData, headers, HttpStatus.OK);
             // 클라이언트에 파일 데이터 응답
+
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

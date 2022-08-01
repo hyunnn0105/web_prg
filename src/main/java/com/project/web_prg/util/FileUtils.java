@@ -69,8 +69,9 @@ public class FileUtils {
         // (풀 경로 - 루트경로) 문자열생성
         // res-path => E:/sl_dev/upload/2022/08/01/fawefaefawefwef_filename.jpg
         // uploadPath => E:/sl_dev/upload/
-        // uploadpath의 글자 수 이다 -> 정 슬래시로 바꾸기
+        // uploadpath의 글자수 이다 -> length로 바꾸기
         String responseFilePath = fileFullPath.substring(uploadPath.length());
+        // 경로를 정 슬래시로 바꿔주기
         return responseFilePath.replace("\\", "/");
     }
 
