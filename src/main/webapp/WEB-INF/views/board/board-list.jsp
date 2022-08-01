@@ -168,7 +168,7 @@
                 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination pagination-lg pagination-custom">
-                    
+                        <!-- ** 여기 prev&next 링크 수정하기 -->
                         <c:if test="${pm.prev}">
                             <li class="page-item"><a class="page-link" href="/board/list?pageNum=${pm.beginPage - 1}/board/list?amount=10&type=${s.type}&keyword=${s.keyword}">prev</a></li>
                         </c:if>
@@ -180,11 +180,11 @@
                         </li>
                       </c:forEach>
 
-                      <c:if test="${pm.next}">
-                      <li class="page-item"><a class="page-link" href="/board/list?pageNum=${pm.endPage + 1}/board/list?amount=10&type=${s.type}&keyword=${s.keyword}">next</a></li>
+                        <c:if test="${pm.next}">
+                            <li class="page-item"><a class="page-link" href="/board/list?pageNum=${pm.endPage + 1}/board/list?amount=10&type=${s.type}&keyword=${s.keyword}">next</a></li>
                         </c:if>
                     </ul>
-                  </nav>
+                </nav>
 
                 <!-- 글쓰기 버튼 영역 -->
                 <div class="btn-write">

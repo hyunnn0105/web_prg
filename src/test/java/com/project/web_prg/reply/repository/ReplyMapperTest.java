@@ -23,7 +23,7 @@ class ReplyMapperTest {
     void saveTest() {
 
         for (int i = 1; i <= 1000; i++) {
-            long bno = (long) (Math.random() * 300 + 1);
+            long bno = (long) (Math.random() * 299 + 1);
 
             Reply reply = new Reply();
             reply.setBoardNo(bno);

@@ -52,7 +52,7 @@ public class ReplyApiController {
     public String modify(@PathVariable Long rno , @RequestBody Reply reply){
         // 경로 문자열 넣어주기
         reply.setReplyNo(rno);
-        log.info("/api/v1/replies POST - {}", reply);
+        log.info("/api/v1/replies PUT - {}", reply);
         boolean flag = replyService.modify(reply);
         return flag ? "modi-success" : "modi-fail";
     }
