@@ -1,14 +1,36 @@
 package com.project.web_prg.util;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class FileUtils {
+
+    // MIME TYPE 설정을 위한 MAP 만들기
+    private static final Map<String, MediaType> mediaMap;
+
+    static {
+        mediaMap = new HashMap<>();
+        mediaMap.put("JPG", MediaType.IMAGE_JPEG);
+        mediaMap.put("GIF", MediaType.IMAGE_GIF);
+        mediaMap.put("PNG", MediaType.IMAGE_PNG);
+    }
+    
+    // 확장자를 알려주면 미디어 타입을 리턴하는 메서드
+    public static MediaType getMediaType(String ext){
+        String upperExt = ext.toUpperCase();
+        if (mediaMap.containsKey(upperExt)){
+            return mediaMap.get(upperExt);
+        }
+        return null;
+    }
 
     /*
         1. 사용자다 파일을 업로드 했을 때 새로운 파일명을 생성해서 반환하고 해당 파일명으로 업로드 하는 메서드
@@ -43,9 +65,13 @@ public class FileUtils {
             e.printStackTrace();
         }
         // 파일의 풀 경로 (디렉토리 경로 + 파일명)
-//        String fileFullPath = newUploadPath + File.separator + newFileName;
-
-        return newFileName;
+        String fileFullPath = newUploadPath + File.separator + newFileName;
+        // (풀 경로 - 루트경로) 문자열생성
+        // res-path => E:/sl_dev/upload/2022/08/01/fawefaefawefwef_filename.jpg
+        // uploadPath => E:/sl_dev/upload/
+        // uploadpath의 글자 수 이다 -> 정 슬래시로 바꾸기
+        String responseFilePath = fileFullPath.substring(uploadPath.length());
+        return responseFilePath.replace("\\", "/");
     }
 
     /**
@@ -86,6 +112,11 @@ public class FileUtils {
     // 한자리수 월, 일 정보를 항상 2자리로 만들어주는 메서드
     private static String len2(int n) {
         return new DecimalFormat("00").format(n);
+    }
+    
+    // 파일명을 받아서 확장자를 반환하는 메서드
+    public static String getFileExtension(String fileName){
+        return fileName.substring(fileName.lastIndexOf(".")+1);
     }
 
 

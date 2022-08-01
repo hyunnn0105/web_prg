@@ -85,7 +85,7 @@
 
                     const $img = document.createElement('img');
                     $img.classList.add('img-sizing');
-                    // life GET요청
+                    // life GET요청 -> 순수한 데이터 넣어주기?
                     $img.setAttribute('src', '/loadFile?fileName=' + fileName);
                     $img.setAttribute('alt', originFileName);
                     $('.uploaded-list').append($img);

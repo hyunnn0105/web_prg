@@ -36,6 +36,13 @@ dependencies {
 
 	//마이바티스 라이브러리 -> 스프링 설치하고 설치하기
 	implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.0"
+
+	//파일업로드 라이브러리
+	implementation 'commons-io:commons-io:2.8.0'
+
+	//이미지 썸네일 라이브러리 -> 작게 줄여줌
+	implementation 'org.imgscalr:imgscalr-lib:4.2'
+	
 }
 
 tasks.named('test') {
