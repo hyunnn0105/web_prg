@@ -265,7 +265,7 @@
         }
 
 
-        // 댓글 페이지 태그 생성 렌더링 함수
+        // 댓글 페이지 태그 생성 렌더링 함수 -> 여기 수정하기
         // 객체는 쪼개서 넣어줄 수 있음 {beginPage, endPage}
         function makePageDOM(pageInfo) {
             let tag = "";
@@ -279,11 +279,21 @@
             }
             //페이지 번호 리스트 만들기
             for (let i = begin; i <= end; i++) {
-                const active = (pageInfo.page.pageNum === i) ? 'p-active' : '';
+
+                let active = '';
+                if (pageInfo.page.pageNum === i) {
+                    active = 'p-active';
+                }
+
                 tag += "<li class='page-item " + active + "'><a class='page-link page-custom' href='" + i +
-                    "'>" +
-                    i + "</a></li>";
+                                "'>" + i + "</a></li>";
+
+                // const active = (pageInfo.page.pageNum === i) ? 'p-active' : '';
+                // tag += "<li class='page-item " + active + "'><a class='page-link page-custom' href='" + i +
+                //     "'>" +
+                //    i + "</a></li>";
             }
+
             //다음 버튼 만들기
             if (pageInfo.next) {
                 tag += "<li class='page-item'><a class='page-link page-active' href='" + (end + 1) +
@@ -355,6 +365,7 @@
             //     .then(replyMap => {
             //         makeReplyDOM(replyMap);
             //     });
+
             fetch(URL + '?boardNo=' + bno + '&pageNum=' + pageNum)
                 .then(res => res.json())
                 .then(replyMap => {
@@ -362,6 +373,21 @@
                 });
         }
 
+
+        // 페이지 버튼 클릭이벤트 등록 함수 220802 추가
+        function makePageButtonClickEvent() {
+            // 페이지 버튼 클릭이벤트 처리
+            const $pageUl = document.querySelector('.pagination');
+            $pageUl.onclick = e => {
+                if (!e.target.matches('.page-item a')) return;
+                e.preventDefault();
+                // 누른 페이지 번호 가져오기
+                const pageNum = e.target.getAttribute('href');
+                // console.log(pageNum);
+                // 페이지 번호에 맞는 목록 비동기 요청
+                showReplies(pageNum);
+            };
+        }
 
 
         // 댓글 등록 이벤트 처리 핸들러 등록 함수
@@ -389,7 +415,7 @@
 
         // 댓글 삭제화면 열기 상세처리 
         function processRemove(rno) {
-            if (!confirm('진짜로 삭제합니까??')) return;
+            if (!confirm('댓글을 삭제하시겠습니까?')) return;
 
             fetch(URL + '/' + rno, {
                     method: 'DELETE'
@@ -452,7 +478,7 @@
         }
 
         // 댓글 수정, 삭제처리 핸들러 정의
-        function makeReplyModAndDelHanderEvent(e) {
+        function makeReplyModAndDelHandlerEvent(e) {
             
             const rno = e.target.parentElement.parentElement.parentElement.dataset.replyid;
             
@@ -476,7 +502,7 @@
 
             const $replyData = document.getElementById('replyData');
             
-            $replyData.onclick = makeReplyModAndDelHanderEvent;
+            $replyData.onclick = makeReplyModAndDelHandlerEvent;
                 
                 // console.log('수정버튼 클릭창1');
 
@@ -568,7 +594,7 @@
             replyModifyEvent();
 
             // 댓글 수정, 삭제처리 핸들러 정의
-            makeReplyModAndDelHanderEvent();
+            makeReplyModAndDelHandlerEvent();
 
 
         })();

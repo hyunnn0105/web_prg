@@ -125,8 +125,24 @@ public class UploadController {
             HttpHeaders headers = new HttpHeaders();
 
             if (mediaType != null){
+                // 이미지라면 
                 headers.setContentType(mediaType);
-            }
+            } else {
+                // 이미지가 아닌 파일 내려주기
+                // 다운로드 가능하도록 설정 -> 사용자가 다운 가능하도록 요청? 보냄
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                
+                // 파일 경로 원래대로 복구
+                fileName = fileName.substring(fileName.lastIndexOf("_") + 1);
+
+                // 파일명이 한글인경우 인코딩 재설정
+                String encoding = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+
+                //header에 위 내용을 추가
+                headers.add("Contnet-Disposition"
+                        ,"attachment; fileName=\"" + encoding + "\"" );
+
+            } 
             
             // 4. 파일 순수데이터 바이트 배열에 저장 (변환)
             byte[] rawData = IOUtils.toByteArray(fis);
