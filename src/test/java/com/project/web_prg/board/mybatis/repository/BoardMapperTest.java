@@ -57,6 +57,6 @@ class BoardMapperTest {
 //                ,""
 //        );
 //        mapper.findAll2(search).forEach(System.out::println);
-    }
 
+    }
 }

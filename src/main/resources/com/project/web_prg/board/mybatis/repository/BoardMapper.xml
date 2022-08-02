@@ -90,6 +90,12 @@
         SET view_cnt = view_cnt + 1
         WHERE board_no = #{boardNo}
     </update>
+    <insert id="addFile">
+        INSERT INTO file_upload
+            (file_name, bno)
+        VALUES
+            (#{fileName}, seq_tbl_board.currval)
+    </insert>
 
 
 </mapper>

@@ -31,4 +31,7 @@ public interface BoardMapper {
 
     // 조회수 상승 처리
     void upViewCount(Long boardNo);
+
+    // 파일 첨부 기능 처리
+    void addFile(String fileName);
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 //TBlBoard - sql cammer case로 바꿔서 이름 정해줌
 // wapper -> Long == 0
@@ -28,6 +29,7 @@ public class Board {
     private String prettierDate; // 변경된 날짜포맷 문자열
     private boolean newArticle;
     private int replyCount;
+    private List<String> fileNames;
 
     // Board-> 시분초 나오게 하기
     public Board(ResultSet rs) throws SQLException {
