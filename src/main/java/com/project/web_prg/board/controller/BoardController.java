@@ -7,6 +7,8 @@ import com.project.web_prg.board.mybatis.domain.Board;
 import com.project.web_prg.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -119,6 +121,17 @@ public class BoardController {
         log.info("controller request /board/modify POST - {}", board);
         boolean flag = boardService.modifyService(board);
         return flag ? "redirect:/board/content/" + board.getBoardNo() : "redirect:/";
+    }
+    
+    // 특정 게시물에 붙은 첨부파일 경로리스트를 클라이언트에게 비동기 전송
+    @GetMapping("/file/{bno}") // 전송받음
+    @ResponseBody // 비동기
+    // 비동기 - ResponseEntity
+    public ResponseEntity<List<String>> getFiles(@PathVariable Long bno) {
+        List<String> files = boardService.getFiles(bno);
+        log.info("/board/file/{} GET! ASYNC - {}", bno, files);
+
+        return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
 }

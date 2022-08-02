@@ -235,5 +235,10 @@ public class BoardService {
         return boardMapper.modify(board);
     }
 
+    // 첨부파일 목록
+    public List<String> getFiles(Long bno){
+        return boardMapper.findFileNames(bno);
+    }
+
 
 }

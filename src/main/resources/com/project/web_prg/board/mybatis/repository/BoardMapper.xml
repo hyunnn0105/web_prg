@@ -97,5 +97,11 @@
             (#{fileName}, seq_tbl_board.currval)
     </insert>
 
+    <select id="findFileNames" resultType="string">
+        SELECT file_name
+        FROM file_upload
+        WHERE bno = #{bno}
+    </select>
+
 
 </mapper>

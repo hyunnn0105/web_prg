@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -57,6 +59,19 @@ class BoardMapperTest {
 //                ,""
 //        );
 //        mapper.findAll2(search).forEach(System.out::println);
+
+    }
+
+    @Test
+    @DisplayName("특정 게시물에 첨부된 파일 경로들을 조회한다")
+    void findFileNamesTest(){
+        Long bno = 323L;
+
+        List<String> fileNames = mapper.findFileNames(bno);
+
+        fileNames.forEach(System.out::println);
+
+        assertTrue(fileNames.size()==2);
 
     }
 }
