@@ -51,6 +51,16 @@
         .pagination .page-item:hover a {
             background: #888 !important;
         }
+
+        .uploaded-list {
+            display: flex;
+        }
+
+        .img-sizing {
+            display: block;
+            width: 100px;
+            height: 100px;
+        }
     </style>
 </head>
 
@@ -81,6 +91,12 @@
                 </p>
 
             </div>
+
+            <!-- 파일 첨부 영역 -->
+            <div class="form-group">
+                <ul class="uploaded-list"></ul>
+            </div>
+
 
             <div class="btn-group btn-group-lg custom-btn-group" role="group" >
                 <button id="mod-btn" type="button" class="btn btn-warning">수정</button>
@@ -213,6 +229,90 @@
         $listBtn.onclick = e => {
             location.href = '/board/list?pageNum=${p.pageNum}&amount=${p.amount}';
         };
+    </script>
+
+    <!-- 파일 불러오기 -->
+
+    <script>
+
+        // jquery 구문 시작
+        $(document).ready(function () {
+
+            function isImageFile(originFileName) {
+
+                //정규표현식
+                const pattern = /jpg$|gif$|png$/i;
+                return originFileName.match(pattern);
+
+                // 내가 쓴 코드 -> if/swich
+                // let endpage = originFileName.substring(originFileName.indexof(".")+1)
+            }
+
+            function checkExtType(fileName) {
+                // 원본 파일 명 추출
+                let originFileName = fileName.substring(fileName.indexOf("_") + 1);
+
+
+                //확장자 추출후 이미지인지까지 확인
+                if (isImageFile(originFileName)) { // 파일이 이미지라면
+
+                    const $img = document.createElement('img');
+                    $img.classList.add('img-sizing');
+                    // life GET요청 -> 순수한 데이터 넣어주기?
+                    $img.setAttribute('src', '/loadFile?fileName=' + fileName);
+                    $img.setAttribute('alt', originFileName);
+                    $('.uploaded-list').append($img);
+
+                } else {
+                    // 이미지가 아니라면 다운로드 링크를 생성
+                    const $a = document.createElement('a');
+                    // 바이트 배열 받아서
+                    $a.setAttribute('href', '/loadFile?fileName=' + fileName);
+
+                    const $img = document.createElement('img');
+                    $img.classList.add('img-sizing');
+                    // life GET요청 -> 순수한 데이터 넣어주기?
+                    $img.setAttribute('src', '/img/file_icon.jpg');
+                    $img.setAttribute('alt', originFileName);
+
+                    $a.append($img)
+                    $a.innerHTML += '<span>' + originFileName + '</span>';
+
+                    $('.uploaded-list').append($a);
+                }
+
+
+
+            }
+
+
+            // 드롭한 파일을 화면에 보여주는 함수 (파일에 따라 다르게 보여줘야함)
+            // 파일 경로 들에서 파일 경로를 하나씩 받음
+            function ShowFileData(fileNames) {
+                // 이미지 인지? 이미지가 아닌지에 따라 구분하여 처리
+                // 이미지이면 썸네일을 렌더링하고 아니면 다운로드 링크를 렌더링한다
+                for(let fileName of fileNames){
+                    checkExtType(fileName);
+                }
+            }
+
+            // 파일 목록 불러오기
+            function showFileList() {
+                fetch('/board/file/' + bno)
+                    .then(res => res.json())
+                    .then(fileNames => {
+                        ShowFileData(fileNames);
+                    });
+            }
+                showFileList();
+
+
+
+
+
+
+        });
+                    // jquery 구문 끝
     </script>
 
     <!-- 댓글관련 js -->
