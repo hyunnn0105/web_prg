@@ -73,5 +73,5 @@
     <script src="/js/gnb-event.js" defer></script>
     <script src="/js/scroll-event.js" defer></script>
 
-        <!-- jquery -->
-        <script src="/js/jquery-3.3.1.min.js"></script>
+    <!-- jquery -->
+    <script src="/js/jquery-3.3.1.min.js"></script>

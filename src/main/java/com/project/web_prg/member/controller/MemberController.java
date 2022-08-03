@@ -84,5 +84,18 @@ public class MemberController {
         // sign-in.jsp
         return "redirect:/member/sign-in";
     }
+    
+    @GetMapping("/sign-out")
+    public String signOut(HttpSession session){
+        if (session.getAttribute("loginUser") != null ){
+            // 1. 세션에서 정보를 삭제한다
+            session.removeAttribute("loginUser");
+            // 2. 세션을 무효화 한다
+            session.invalidate();
+            return "redirect:/";
+            // 자동로그인이면 자동로드인 쿠키 삭제해주기
+        }
+        return "redirect:/member/sign-in";
+    }
 
 }

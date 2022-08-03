@@ -124,6 +124,11 @@
         // else {
         //     alert('로그인에 성공하셨습니다!');
         // }
+
+        const warning = '${warningMsg}';
+        if (warning == 'forbidden') {
+            alert('로그인 후에 이용할 수 있습니다.')
+        }
     </script>
 
 
