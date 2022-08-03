@@ -29,8 +29,17 @@
             <li><a href="#">Contact</a></li>
             <li><a href="#">News</a></li>
             <li><a href="#">Favorite</a></li>
-            <li><a href="/member/sign-up">SignUp</a></li>
-            <li><a href="/member/sign-in">SignUp</a></li>
+            <!-- sessionScope : 세션에서 (로그인유저를) 가져와라 -->
+            <c:if test="${sessionScope.loginUser == null}">
+                <li><a href="/member/sign-up">Sign Up</a></li>
+                <li><a href="/member/sign-in">Sign In</a></li>
+            </c:if>
+
+            <c:if test="${sessionScope.loginUser != null}">
+                <li><a href="#">My Page</a></li>
+                <li><a href="/member/sign-out">Sign Out</a></li>
+            </c:if>
+
         </ul>
     </nav>
 

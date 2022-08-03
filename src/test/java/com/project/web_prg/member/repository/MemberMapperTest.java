@@ -18,6 +18,9 @@ class MemberMapperTest {
     @Autowired
     MemberMapper mapper;
 
+    @Autowired // 빈등록 -> only 싱글톤
+    BCryptPasswordEncoder encoder;
+
     @Test
     @DisplayName("회원가입이 성공해야 함")
     void registerTest(){
@@ -114,4 +117,33 @@ class MemberMapperTest {
 
         assertEquals(1, flag);
     }
+
+    @Test
+    @DisplayName("로그인을 검증해야한다")
+    void signInTest(){
+
+        // 로그인 시도 계정, 패스워드
+        String inputId = "tese1234";
+        String inputPw = "!12345678";
+
+        // 로그인 시도한 계정명으로 회원정보를 조회
+        Member foundMember = mapper.findUser(inputId);
+        // 2. 회원가입 여부를 먼저 확인
+        if (foundMember != null) {
+            // 3. 패스워드를 대조한다
+            // 실제 회원의 비밀번호를 가져온다.
+            String dbPw = foundMember.getPassword();
+            // 암호화 된 비번이랑 클라이언트네서 입력받은 비번이랑 비교하기
+            // 4. 암호화된 패스워드를 디코딩하여 비교 matches(인코딩,db)
+            if (encoder.matches(inputPw, dbPw)){
+                System.out.println("로그인 성공");
+            } else {
+                System.out.println("비밀번호가 틀렸습니다");
+            }
+        } else {
+            System.out.println("존재하지 않는 아이디 입니다.");
+        }
+    }
+    
+    
 }
