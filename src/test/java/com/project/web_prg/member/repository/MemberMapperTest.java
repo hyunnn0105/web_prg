@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class MemberMapperTest {
@@ -65,5 +68,50 @@ class MemberMapperTest {
         assertTrue(flag);
 
     }
+    
+    
 
+    @Test
+    @DisplayName("유저 한명만 조회하기")
+    void findUserTest(){
+        String account = "peach";
+
+        Member member = mapper.findUser(account);
+        System.out.println("member = " + member);
+        assertEquals("복숭아",member.getName());
+    }
+    
+    // 실패테스트도 돌려보기
+
+    @Test
+    @DisplayName("유저 한명만 조회 실패하기")
+    void findUserTest2(){
+        String account = "peach123";
+
+        Member member = mapper.findUser(account);
+        System.out.println("member = " + member);
+        assertNull(member);
+    }
+    
+    @Test
+    @DisplayName("아이디를 중복확인 할 수 있다")
+    void checkAccountTest(){
+        Map<String, Object> checkMap = new HashMap<>();
+        checkMap.put("type", "account");
+        checkMap.put("value", "peach");
+        int flag = mapper.isDuplicate(checkMap);
+
+        assertEquals(1, flag);
+    }
+
+    @Test
+    @DisplayName("이메일을 중복확인 할 수 있다")
+    void checkEmailTest(){
+        Map<String, Object> checkMap = new HashMap<>();
+        checkMap.put("type", "email");
+        checkMap.put("value", "peach@gmail.com");
+        int flag = mapper.isDuplicate(checkMap);
+
+        assertEquals(1, flag);
+    }
 }

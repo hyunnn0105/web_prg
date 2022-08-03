@@ -9,18 +9,32 @@
     </resultMap>
 
 <!--    회원가입 가능-->
+    <select id="isDuplicate" resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_member
+        <if test="type=='account'">
+            WHERE account = #{value}
+        </if>
+        <if test="type=='email'">
+            WHERE email = #{value}
+        </if>
+
+        <!--        1이 뜨면 중복-->
+
+    </select>
+    <!--중복체크 기능-->
     <insert id="resgister">
         INSERT INTO tbl_member
             (account, password, name, email, auth)
         VALUES
             (#{account},#{password},#{name},#{email},#{auth})
     </insert>
-<!--중복체크 기능-->
-    <select id="inDuplicate">
-
-    </select>
 <!--    회원 조회 기능-->
-    <select id="findUser">
+    <select id="findUser" resultMap="memberMap">
+
+        SELECT *
+        FROM tbl_member
+        WHERE account = #{account}
 
     </select>
 </mapper>

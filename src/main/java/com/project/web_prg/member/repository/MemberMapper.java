@@ -14,7 +14,7 @@ public interface MemberMapper {
     // 체크타입 : 계정 or email
     // check 값 : 중복검사대상 값
     // 필드가 작으면 MAP으로 넣을 수 있음
-    int inDuplicate(Map<String, Object> checkMap);
+    int isDuplicate(Map<String, Object> checkMap);
 
     // 회원정보 조회 기능
     Member findUser(String account);
