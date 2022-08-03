@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -56,8 +57,17 @@ public class MemberController {
 
     // 로그인 화면을 열어주는 요청처리
     @GetMapping("/sign-in")
-    public void signIn(){
+    public void signIn(HttpServletRequest request){
+
         log.info("member controller sign-in GET - forwording to sign-up.jsp");
+        // 요청 정보 헤더 안에는 Referer라는 키가 있는데
+        // 여기 안에는 이 페이지를 진입할 때 어디에서 왔는지 URL 정보가 들어있음
+
+        String referer = request.getHeader("Referer");
+        log.info("referer -{}", referer);
+
+        request.getSession().setAttribute("redirectURI", referer);
+    
     }
 
     // 로그인 요청 처리 - 아이디 / 비번 / 자동로그인(O/X) 요청 3가지
@@ -77,7 +87,8 @@ public class MemberController {
 
         if (flag == LoginFlag.SUCCESS) {
             log.info("login success!");
-            return "redirect:/"; // home
+            String redirectURI = (String) session.getAttribute("redirectURI");
+            return "redirect:/" + redirectURI; // home
         }
         // Msg -> message인가?
         ra.addFlashAttribute("loginMsg", flag);
