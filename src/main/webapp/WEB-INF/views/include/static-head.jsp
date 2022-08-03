@@ -58,8 +58,7 @@
     <!-- custom css -->
     <link rel="stylesheet" href="/css/main.css">
 
-    <!-- jquery -->
-    <script src="/js/jquery-3.3.1.min.js"></script>
+
 
     <!-- libraries -->
     <!-- scrolla js -->
@@ -73,3 +72,6 @@
     <script src="/js/config.js" defer></script>
     <script src="/js/gnb-event.js" defer></script>
     <script src="/js/scroll-event.js" defer></script>
+
+        <!-- jquery -->
+        <script src="/js/jquery-3.3.1.min.js"></script>

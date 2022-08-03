@@ -18,16 +18,14 @@
         <if test="type=='email'">
             WHERE email = #{value}
         </if>
-
         <!--        1이 뜨면 중복-->
-
     </select>
     <!--중복체크 기능-->
     <insert id="resgister">
         INSERT INTO tbl_member
-            (account, password, name, email, auth)
+            (account, password, name, email)
         VALUES
-            (#{account},#{password},#{name},#{email},#{auth})
+            (#{account},#{password},#{name},#{email})
     </insert>
 <!--    회원 조회 기능-->
     <select id="findUser" resultMap="memberMap">
