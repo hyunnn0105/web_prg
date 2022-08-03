@@ -88,7 +88,8 @@ public class MemberController {
         if (flag == LoginFlag.SUCCESS) {
             log.info("login success!");
             String redirectURI = (String) session.getAttribute("redirectURI");
-            return "redirect:/" + redirectURI; // home
+            log.info("redirectURI - {}", redirectURI);
+            return "redirect:" + redirectURI; // 로그인 요청이 들어온 곳으로 돌아가기
         }
         // Msg -> message인가?
         ra.addFlashAttribute("loginMsg", flag);
