@@ -105,7 +105,7 @@
                         <button id="del-btn" type="button" class="btn btn-danger">삭제</button>
 
                     </c:if>
-                        <button id="list-btn" type="button" class="btn btn-dark" href="location.href = '/board/modify?boardNo=${b.boardNo}'">목록</button>
+                        <button id="list-btn" type="button" class="btn btn-dark" onclick="location.href = '/board/modify?boardNo=${b.boardNo}'">목록</button>
                 </div>  
 
             
@@ -341,8 +341,8 @@
 
     // 로그인 한회원 계정명
         const currentAccount = '${$loginUser.account}';
-        const auth = '${loginUser.auth}'
-        const $newReplyWriter = document.getElementById('newReplyWriter')
+        const auth = '${loginUser.auth}';
+        const $newReplyWriter = document.getElementById('newReplyWriter');
         console.log($newReplyWriter.value);
 
         // 원본 글 번호
@@ -534,7 +534,7 @@
                 console.log('댓글 내용 : ' , replyText);
 
                 // 모달에 해당 댓글 내용을 배치한다
-                document.getElementById('modReplyText').textContent = replyText;
+                document.getElementById('modReplyText').value = replyText;
 
                 // 모달을 띄울 때 다음작업(수정완료 처리) 을 위해 댓글번호 모달에 달아주기
 
@@ -596,7 +596,7 @@
                     if (msg === 'insert-success') {
                         alert('저장성공');
                         // 댓글 리셋
-                        $writerInput.value = '';
+                        // $writerInput.value = ''; -- 이제는 account 정보 넘겨줌! [220804]
                         $contentInput.value = '';
                         // 댓글목록재요청
                         showReplies(document.querySelector('.pagination').dataset.fp);

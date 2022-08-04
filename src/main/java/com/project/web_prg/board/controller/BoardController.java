@@ -5,7 +5,6 @@ import com.project.web_prg.board.common.paging.PageMaker;
 import com.project.web_prg.board.common.search.Search;
 import com.project.web_prg.board.mybatis.domain.Board;
 import com.project.web_prg.board.service.BoardService;
-import com.project.web_prg.util.LoginUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -21,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
+
+import static com.project.web_prg.util.LoginUtils.getCurrnetUtil;
 
 @Controller
 @Log4j2
@@ -84,7 +85,7 @@ public class BoardController {
     // model -> fowarding / 
     public String write(Board board, @RequestParam("files") List<MultipartFile> fileList
             , RedirectAttributes ra, HttpSession session){
-        session.getAttribute(LoginUtils.getCurrnetUtil(session));
+        session.getAttribute(getCurrnetUtil(session));
         log.info("controller request /board/write POST! - {}", board);
 
 

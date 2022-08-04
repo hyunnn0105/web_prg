@@ -18,9 +18,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     // 자동로그인
     private final AutoLoginInterceptor autoLoginInterceptor;
 
-
-
-
     // 인터셉터 설정 추가 메서드
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
