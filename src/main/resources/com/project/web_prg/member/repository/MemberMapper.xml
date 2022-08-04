@@ -6,6 +6,8 @@
 <mapper namespace="com.project.web_prg.member.repository.MemberMapper">
     <resultMap id="memberMap" type="com.project.web_prg.member.domain.Member">
         <result column="reg_date" property="regDate" />
+        <result column="session_id" property="sessionId" />
+        <result column="limit_time" property="limitTime" />
     </resultMap>
 
 <!--    회원가입 가능-->
@@ -34,5 +36,17 @@
         FROM tbl_member
         WHERE account = #{account}
 
+    </select>
+
+<!--    자동로그인 정보 추가-->
+    <update id="saveAutoLoginCookie">
+        UPDATE tbl_member
+        SET session_id = #{sessionId}, limit_time = #{limitTime}
+        WHERE account = #{account}
+    </update>
+
+    <select id="findByOneSessionId" resultMap="memberMap">
+        SELECT * FROM tbl_member
+        WHERE session_id = #{sessionId}
     </select>
 </mapper>

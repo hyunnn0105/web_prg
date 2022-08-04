@@ -17,3 +17,9 @@ CREATE TABLE tbl_member (
 -- 마지막으로 로그인 한 정보
 
 SELECT * FROM tbl_member;
+
+-- 자동로그인 DB
+ALTER TABLE tbl_member ADD session_id VARCHAR2(200) DEFAULT 'none';
+ALTER TABLE tbl_member ADD limit_time DATE;
+
+commit;

@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import static com.project.web_prg.util.LoginUtils.*;
 
 @Controller
 @Log4j2
@@ -74,14 +77,15 @@ public class MemberController {
     @PostMapping("/sign-in")
     public String signIn(LoginDTO inputData
             , RedirectAttributes ra
-            , HttpSession session // 세션정보 객체
+            , HttpSession session
+            , HttpServletResponse response             // 세션정보 객체
     ){
         log.info("/member/sign-in POST - {}", inputData);
         // 여기에서 보여지는 로그는 js에서 따로 처리해야함
 //        log.info("session timeout - {}", session.getMaxInactiveInterval());
         
         // 로그인 서비스 호출
-        LoginFlag flag = memberService.logIn(inputData, session);
+        LoginFlag flag = memberService.logIn(inputData, session, response);
 
         if (flag == LoginFlag.SUCCESS) {
             log.info("login success!");
@@ -96,14 +100,21 @@ public class MemberController {
     }
     
     @GetMapping("/sign-out")
-    public String signOut(HttpSession session){
-        if (session.getAttribute("loginUser") != null ){
+    public String signOut(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession();
+        if (isLogin(session)){
+            // 만약 자동로그인 상태라면 해제한다.
+            if (hasAutoLoginCookie(request)){
+                memberService.autoLogOut(getCurrnetUtil(session), request, response);
+
+            }
             // 1. 세션에서 정보를 삭제한다
-            session.removeAttribute("loginUser");
+            session.removeAttribute(LOGIN_FLAG);
             // 2. 세션을 무효화 한다
             session.invalidate();
             return "redirect:/";
-            // 자동로그인이면 자동로드인 쿠키 삭제해주기
+            // 자동로그인이면 자동로드인 쿠키 삭제해주기!! +[22.08.04]
+            //
         }
         return "redirect:/member/sign-in";
     }

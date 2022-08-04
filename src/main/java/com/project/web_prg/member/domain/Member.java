@@ -18,5 +18,7 @@ public class Member {
     private Auth auth;
     // 공통컬럼을 상속으로 처리?
     private Date regDate;
+    private String sessionId;
+    private Date limitTime;
 
 }
