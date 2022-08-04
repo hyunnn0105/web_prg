@@ -3,6 +3,7 @@ package com.project.web_prg.board.mybatis.repository;
 import com.project.web_prg.board.common.paging.Page;
 import com.project.web_prg.board.common.search.Search;
 import com.project.web_prg.board.mybatis.domain.Board;
+import com.project.web_prg.board.mybatis.dto.ValridateMemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -37,4 +38,7 @@ public interface BoardMapper {
 
     // 게시물에 붙어있는 첨부파일결로명 전부 조회하기
     List<String> findFileNames(Long bno);
+    
+    // 게시물 번호로 게시글 작성자의 계정명과 권한 가져오기
+    ValridateMemberDTO findMemberByBoardNo(Long boardNo);
 }

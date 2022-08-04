@@ -5,6 +5,7 @@ import com.project.web_prg.board.common.paging.PageMaker;
 import com.project.web_prg.board.common.search.Search;
 import com.project.web_prg.board.mybatis.domain.Board;
 import com.project.web_prg.board.service.BoardService;
+import com.project.web_prg.util.LoginUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -68,10 +69,10 @@ public class BoardController {
     @GetMapping("/write")
     public String write(HttpSession session, RedirectAttributes ra){
 
-        if (session.getAttribute("loginUser") == null){
-            ra.addFlashAttribute("warningMsg", "forbidden");
-            return "redirect:/member/sign-in";
-        }
+//        if (session.getAttribute("loginUser") == null){
+//            ra.addFlashAttribute("warningMsg", "forbidden");
+//            return "redirect:/member/sign-in";
+//        }
 
         log.info("controller request /board/write GET");
         return "board/board-write";
@@ -81,20 +82,13 @@ public class BoardController {
     @PostMapping("/write")
 //    public String write(@RequestBody Board board){ <- test용
     // model -> fowarding / 
-    public String write(Board board, @RequestParam("files") List<MultipartFile> fileList, RedirectAttributes ra){
+    public String write(Board board, @RequestParam("files") List<MultipartFile> fileList
+            , RedirectAttributes ra, HttpSession session){
+        session.getAttribute(LoginUtils.getCurrnetUtil(session));
         log.info("controller request /board/write POST! - {}", board);
 
-        /*
-        if (fileList != null) {
-            List<String> fileNames = new ArrayList<>();
-            for (MultipartFile f : fileList) {
-                log.info("attachment file-name: {}", f.getOriginalFilename());
-                fileNames.add(f.getOriginalFilename());
-            }
-            board.setFileNames(fileNames);
-        }
 
-         */
+        // 현재 로그인
 
         // db 넣기
         boolean flag = boardService.saveService(board);
@@ -105,12 +99,38 @@ public class BoardController {
         return flag ? "redirect:/board/list" : "redirect:/";
     }
 
-    // 게시물 삭제 요청
+    // 게시물 삭제 확인 요청
     @GetMapping("/delete")
-    public String delete(Long boardNo){
-        log.info("controller request /board/delete GET - {}", boardNo);
+    public String delete(@ModelAttribute("boardNo") Long boardNo, Model model) {
+
+        log.info("controller request /board/delete GET! - bno: {}", boardNo);
+
+        model.addAttribute("validate", boardService.getMember(boardNo));
+
+        return "board/process-delete";
+    }
+
+    // 게시물 삭제 확정 요청
+    @PostMapping("/delete")
+    public String delete(Long boardNo) {
+        log.info("controller request /board/delete POST! - bno: {}", boardNo);
+
         return boardService.removeService(boardNo) ? "redirect:/board/list" : "redirect:/";
     }
+
+    // 게시물 삭제 요청
+    /*
+    @GetMapping("/delete")
+    public String delete(Long boardNo, Model model, HttpServletRequest request, HttpServletResponse response){
+        log.info("controller request /board/delete GET - {}", boardNo);
+        // jsp
+        model.addAttribute("board", boardService.findOneService(boardNo, response, request));
+        // interceptor
+        model.addAttribute("validate", boardService.getMember(boardNo));
+        return boardService.removeService(boardNo) ? "redirect:/board/list" : "redirect:/";
+    }
+
+     */
 
     // 수정화면 요청 GET --> overloding 규칙 위반 (안에 들어가는 값이 달라야한다)
     // findOne 있어서 req/rep 생성해서 넘김
@@ -119,6 +139,8 @@ public class BoardController {
         log.info("controller request /board/modify GET! - bno {}", boardNo);
         Board board = boardService.findOneService(boardNo, response ,request);
         model.addAttribute("board", board);
+        // interceptor
+        model.addAttribute("validate", boardService.getMember(boardNo));
         return "board/board-modify";
     }
 

@@ -40,6 +40,7 @@
             <form id="write-form" action="/board/write" method="post" autocomplete="off" enctype="multipart/form-data">
 
                 <!-- input name  = commnd객체 필드명 -->
+                <input type="hidden" id="account" name="account" value="${loginUser.account}">
                 <div class="mb-3">
                     <label for="writer-input" class="form-label">작성자</label>
                     <input type="text" class="form-control" id="writer-input" placeholder="이름"
@@ -85,6 +86,8 @@
 
 
     <script>
+
+        const $account = document.getElementById('account');
 
             // jquery 구문 시작
             $(document).ready(function () {

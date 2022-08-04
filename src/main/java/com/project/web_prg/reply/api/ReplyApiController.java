@@ -3,10 +3,12 @@ package com.project.web_prg.reply.api;
 import com.project.web_prg.board.common.paging.Page;
 import com.project.web_prg.reply.domain.Reply;
 import com.project.web_prg.reply.service.ReplyService;
+import com.project.web_prg.util.LoginUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @RestController
@@ -40,7 +42,8 @@ public class ReplyApiController {
     // http://localhost:8185/api/v1/replies?boardNo=301
     @PostMapping("")
     // form으로 받을 수 없어서 json으로 받기
-    public String create(@RequestBody Reply reply){
+    public String create(@RequestBody Reply reply, HttpSession session){
+        reply.setAccount(LoginUtils.getCurrnetUtil(session));
         log.info("/api/v1/replies POST - {}", reply);
         boolean flag = replyService.write(reply);
         return flag ? "insert-success" : "fail";

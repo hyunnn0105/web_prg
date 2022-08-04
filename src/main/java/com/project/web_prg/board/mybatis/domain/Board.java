@@ -23,6 +23,7 @@ public class Board {
     private Long viewCnt;
     // java.util
     private Date regDate;
+    private String account;
     
     // 커스텀 데이터 필드
     private String shortTitle; // 줄임제목

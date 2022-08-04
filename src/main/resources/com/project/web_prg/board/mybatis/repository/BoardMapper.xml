@@ -15,9 +15,9 @@
 <!--    페이지 이동할때 검색 타입이랑 키워드 들고가기!! -->
     <insert id="save">
         INSERT INTO tbl_board
-        (board_no, writer, title, content)
+        (board_no, writer, title, content, account)
         VALUES
-        (seq_tbl_board.nextVal, #{writer},#{title},#{content})
+        (seq_tbl_board.nextVal, #{writer},#{title},#{content},#{account})
     </insert>
 
 
@@ -101,6 +101,19 @@
         SELECT file_name
         FROM file_upload
         WHERE bno = #{bno}
+    </select>
+
+<!--    resultMap 컬럼명이 동일해서 안만들어준거임-->
+    <select id="findMemberByBoardNo" resultType="com.project.web_prg.board.mybatis.dto.ValridateMemberDTO">
+
+        SELECT account, auth
+        FROM tbl_member
+        WHERE account = (
+                SELECT account
+                FROM tbl_board
+                WHERE board_no = #{boardNo}
+            )
+
     </select>
 
 

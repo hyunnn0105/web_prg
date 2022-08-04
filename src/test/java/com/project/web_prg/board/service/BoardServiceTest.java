@@ -14,6 +14,19 @@ class BoardServiceTest {
     @Autowired
     BoardService service;
 
+//    @Test
+//    @DisplayName("board write")
+//    void writeServiceTest(){
+//        Board b = new Board();
+//        b.setAccount("tese1234");
+//        b.setTitle("servicetest");
+////        b.setWriter();
+//        b.setContent("sdfawefawfwe");
+//
+//
+//        service.saveService(b);
+//        System.out.println(b);
+//    }
     @Test
     @DisplayName("파일첨부가 잘 수행되어야한다")
     void addFileTest(){

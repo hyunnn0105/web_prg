@@ -125,9 +125,10 @@
         //     alert('로그인에 성공하셨습니다!');
         // }
 
-        const warning = '${warningMsg}';
-        if (warning == 'forbidden') {
-            alert('로그인 후에 이용할 수 있습니다.')
+        const warning = '${message}';
+        if (warning == 'no-login') {
+            alert('로그인 후에 이용할 수 있습니다.');
+            // 돔을 만들어서 붙이는 방법도 있음
         }
     </script>
 

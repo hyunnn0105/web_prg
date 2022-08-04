@@ -2,6 +2,7 @@ package com.project.web_prg.board.mybatis.repository;
 
 import com.project.web_prg.board.common.paging.Page;
 import com.project.web_prg.board.mybatis.domain.Board;
+import com.project.web_prg.board.mybatis.dto.ValridateMemberDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -24,6 +26,7 @@ class BoardMapperTest {
         board.setTitle("mapperT");
         board.setWriter("mama");
         board.setContent("sdfjasfweiwohwefhawefwefw");
+        board.setAccount("tese1234");
 
         mapper.save(board);
     }
@@ -73,5 +76,16 @@ class BoardMapperTest {
 
         assertTrue(fileNames.size()==2);
 
+    }
+
+    @Test
+    @DisplayName("게시글번호로 글쓴이의 계정정보 가져오기")
+    void findAccountTest(){
+        Long boardNo = 331L;
+        ValridateMemberDTO memberDTO = mapper.findMemberByBoardNo(boardNo);
+
+        System.out.println("memberDTO = " + memberDTO);
+        assertEquals("tese1234", memberDTO.getAccount());
+        assertEquals("COMMON", memberDTO.getAuth().toString());
     }
 }

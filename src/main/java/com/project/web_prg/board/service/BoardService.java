@@ -2,6 +2,7 @@ package com.project.web_prg.board.service;
 
 import com.project.web_prg.board.common.search.Search;
 import com.project.web_prg.board.mybatis.domain.Board;
+import com.project.web_prg.board.mybatis.dto.ValridateMemberDTO;
 import com.project.web_prg.board.mybatis.repository.BoardMapper;
 import com.project.web_prg.reply.repository.ReplyMapper;
 import lombok.RequiredArgsConstructor;
@@ -238,6 +239,9 @@ public class BoardService {
     // 첨부파일 목록
     public List<String> getFiles(Long bno){
         return boardMapper.findFileNames(bno);
+    }
+    public ValridateMemberDTO getMember(Long boardNo){
+        return boardMapper.findMemberByBoardNo(boardNo);
     }
 
 

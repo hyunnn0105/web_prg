@@ -9,10 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +54,7 @@ public class MemberController {
 
     // 로그인 화면을 열어주는 요청처리
     @GetMapping("/sign-in")
-    public void signIn(HttpServletRequest request){
+    public void signIn(@ModelAttribute("message") String message, HttpServletRequest request){
 
         log.info("member controller sign-in GET - forwording to sign-up.jsp");
         // 요청 정보 헤더 안에는 Referer라는 키가 있는데
@@ -65,6 +62,7 @@ public class MemberController {
 
         String referer = request.getHeader("Referer");
         log.info("referer -{}", referer);
+        log.info("message - {}", message);
 
         request.getSession().setAttribute("redirectURI", referer);
     

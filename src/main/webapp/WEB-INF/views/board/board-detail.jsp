@@ -33,8 +33,8 @@
         }
 
         .content-container .custom-btn-group {
-            position: absolute;
-            bottom: -10%;
+            /* position: absolute; */
+            /* bottom: -10%; */
             left: 50%;
             transform: translateX(-50%);
         }
@@ -72,6 +72,7 @@
         <div class="content-container">
 
             <h1 class="main-title">${b.boardNo}번 게시물</h1>
+            <h2>${b.account}</h2>
 
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">작성자</label>
@@ -97,12 +98,17 @@
                 <ul class="uploaded-list"></ul>
             </div>
 
+            
+                <div class="btn-group btn-group-lg custom-btn-group" role="group" >
+                    <c:if test="${loginUser.account == b.account || loginUser.auth == 'ADMIN'}">
+                        <button id="mod-btn" type="button" class="btn btn-warning">수정</button>
+                        <button id="del-btn" type="button" class="btn btn-danger">삭제</button>
 
-            <div class="btn-group btn-group-lg custom-btn-group" role="group" >
-                <button id="mod-btn" type="button" class="btn btn-warning">수정</button>
-                <button id="del-btn" type="button" class="btn btn-danger">삭제</button>
-                <button id="list-btn" type="button" class="btn btn-dark">목록</button>
-            </div>
+                    </c:if>
+                        <button id="list-btn" type="button" class="btn btn-dark" href="location.href = '/board/modify?boardNo=${b.boardNo}'">목록</button>
+                </div>  
+
+            
 
             <!-- 댓글 영역 -->
 
@@ -113,27 +119,32 @@
                     <!-- 댓글 쓰기 영역 -->
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <label for="newReplyText" hidden>댓글 내용</label>
-                                        <textarea rows="3" id="newReplyText" name="replyText" class="form-control"
-                                            placeholder="댓글을 입력해주세요."></textarea>
+                            <c:if test="${loginUser==null}">
+                                <a href="/member/sign-in">댓글은 로그인 후 작성 가능합니다.</a>
+                            </c:if>
+                            <c:if test="${loginUser!=null}">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label for="newReplyText" hidden>댓글 내용</label>
+                                            <textarea rows="3" id="newReplyText" name="replyText" class="form-control"
+                                                placeholder="댓글을 입력해주세요."></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="newReplyWriter" hidden>댓글 작성자</label>
-                                        <input id="newReplyWriter" name="replyWriter" type="text" class="form-control"
-                                            placeholder="작성자 이름" style="margin-bottom: 6px;">
-                                        <button id="replyAddBtn" type="button"
-                                            class="btn btn-dark form-control">등록</button>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="newReplyWriter" hidden>댓글 작성자</label>
+                                            <input id="newReplyWriter" name="replyWriter" type="text" class="form-control"
+                                                value="${loginUser.name}" style="margin-bottom: 6px;" readonly>
+                                            <button id="replyAddBtn" type="button"
+                                                class="btn btn-dark form-control">등록</button>
+                                        </div>
                                     </div>
+
+
+
                                 </div>
-
-
-
-                            </div>
+                            </c:if>
                         </div>
                     </div> <!-- end reply write -->
 
@@ -187,9 +198,13 @@
 
                         <!-- Modal footer -->
                         <div class="modal-footer">
-                            <button id="replyModBtn" type="button" class="btn btn-dark">수정</button>
-                            <button id="modal-close" type="button" class="btn btn-danger"
-                                data-bs-dismiss="modal">닫기</button>
+                            <!-- [수정] 작성자를 어케 잡아오지? -->
+                            <c:if test="${loginUser.account == b.account || loginUser.auth == 'ADMIN'}">
+                                <button id="replyModBtn" type="button" class="btn btn-dark">수정</button>
+                                <button id="modal-close" type="button" class="btn btn-danger"
+                                    data-bs-dismiss="modal">닫기</button>
+                            </c:if>
+                            
                         </div>
                     </div>
                 </div>
@@ -209,12 +224,16 @@
     <!-- 게시글 관련 js -->
     
     <script>
-       const [$modBtn, $delBtn, $listBtn] 
-        = [...document.querySelector('div[role=group]').children];
+    //    const [$modBtn, $delBtn, $listBtn] 
+    //     = [...document.querySelector('div[role=group]').children];
+        const $modBtn = document.getElementById('mod-btn');
+        const $delBtn = document.getElementById('del-btn');
+        const $listBtn = document.getElementById('list-btn');
 
         // const $modBtn = document.getElementById('mod-btn');
         //수정버튼
         $modBtn.onclick = e => {
+            // console.log('수정버튼');
             location.href = '/board/modify?boardNo=${b.boardNo}';
         };
 
@@ -227,6 +246,7 @@
         };
         //목록버튼
         $listBtn.onclick = e => {
+            // console.log('삭제버튼');
             location.href = '/board/list?pageNum=${p.pageNum}&amount=${p.amount}';
         };
     </script>
@@ -318,6 +338,13 @@
     <!-- 댓글관련 js -->
 
     <script>
+
+    // 로그인 한회원 계정명
+        const currentAccount = '${$loginUser.account}';
+        const auth = '${loginUser.auth}'
+        const $newReplyWriter = document.getElementById('newReplyWriter')
+        console.log($newReplyWriter.value);
+
         // 원본 글 번호
         let bno = '${b.boardNo}';
         // console.log(bno);
@@ -434,10 +461,13 @@
                             "    </div><br>" +
                             "    <div class='row'>" +
                             "       <div class='col-md-6'>" + rep.replyText + "</div>" +
-                            "       <div class='offset-md-2 col-md-4 text-right'>" +
-                            "         <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;" +
-                            "         <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>" +
-                            "       </div>" +
+                            "       <div class='offset-md-2 col-md-4 text-right'>";
+                            if(currentAccount == '${rep.getAccount}' || auth == 'ADMIN') {
+                                tag += "         <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;" +
+                                                            "         <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>";
+                            }
+
+                            tag += "       </div>" +
                             "    </div>" +
                             " </div>";
                 

@@ -14,4 +14,5 @@ public class Reply {
     private String replyWriter; //댓글작성자
     private Date replyDate; //작성일자
     private Long boardNo; //원본 글번호
+    private String account;
 }
