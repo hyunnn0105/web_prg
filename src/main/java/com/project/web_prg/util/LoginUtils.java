@@ -12,6 +12,7 @@ public class LoginUtils {
 
     public static final String LOGIN_FLAG = "loginUser";
     public static final String LOGIN_COOKIE = "autoLoginCookie";
+    public static final String LOGIN_FROM = "loginMethod";
 
     // 로그인 했는지 알려주기~
     public static boolean isLogin(HttpSession session){

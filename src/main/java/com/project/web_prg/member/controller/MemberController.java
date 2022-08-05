@@ -1,7 +1,10 @@
 package com.project.web_prg.member.controller;
 
 import com.project.web_prg.member.domain.Member;
+import com.project.web_prg.member.domain.OAuthValue;
+import com.project.web_prg.member.domain.SNSLogin;
 import com.project.web_prg.member.dto.LoginDTO;
+import com.project.web_prg.member.service.KakaoService;
 import com.project.web_prg.member.service.LoginFlag;
 import com.project.web_prg.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,6 +29,7 @@ import static com.project.web_prg.util.LoginUtils.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final KakaoService kakaoService;
 
     // 회원가입 양식 띄우기 요청
     @GetMapping("/sign-up")
@@ -57,13 +62,15 @@ public class MemberController {
 
     // 로그인 화면을 열어주는 요청처리
     @GetMapping("/sign-in")
-    public void signIn(@ModelAttribute("message") String message, HttpServletRequest request){
+    public void signIn(@ModelAttribute("message") String message, HttpServletRequest request, Model model){
 
         log.info("member controller sign-in GET - forwording to sign-up.jsp");
         // 요청 정보 헤더 안에는 Referer라는 키가 있는데
         // 여기 안에는 이 페이지를 진입할 때 어디에서 왔는지 URL 정보가 들어있음
 
         String referer = request.getHeader("Referer");
+        model.addAttribute("kakaoAppKey", OAuthValue.KAKAO_APP_KEY);
+        model.addAttribute("kakaoRedirect", OAuthValue.KAKAO_REDIRECT_URI);
         log.info("referer -{}", referer);
         log.info("message - {}", message);
 
@@ -100,7 +107,7 @@ public class MemberController {
     }
     
     @GetMapping("/sign-out")
-    public String signOut(HttpServletRequest request, HttpServletResponse response){
+    public String signOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         if (isLogin(session)){
             // 만약 자동로그인 상태라면 해제한다.
@@ -108,6 +115,21 @@ public class MemberController {
                 memberService.autoLogOut(getCurrnetUtil(session), request, response);
 
             }
+            
+            // SNS 로그인 상태라면 해당 SNS 로그아웃 처리를 진행한다
+            SNSLogin from = (SNSLogin) session.getAttribute(LOGIN_FROM);
+            switch (from) {
+                case KAKAO:
+                    kakaoService.logOut((String) session.getAttribute("accessToken"));
+                    break;
+                case NAVER:
+                    break;
+                case GOOGLE:
+                    break;
+                case FACEBOOK:
+                    break;
+            }
+            
             // 1. 세션에서 정보를 삭제한다
             session.removeAttribute(LOGIN_FLAG);
             // 2. 세션을 무효화 한다
